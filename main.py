@@ -10,6 +10,8 @@ students_math = pd.read_csv("dataset/student/student-mat.csv", sep=';')
 
 # Rug plot
 sns.rugplot(students_math['studytime'])
+sns.stripplot(x="school", y="studytime", data=students_math, jitter=True)
+sns.violinplot(x="school", y="studytime", data=students_math, hue="school")
 # Scatter Plot
 plt.scatter('studytime', 'age', data=students_math)
 students_math.plot(x="studytime", y="age", kind="scatter")
