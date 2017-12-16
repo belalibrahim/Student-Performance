@@ -9,18 +9,13 @@ import random
 students_math = pd.read_csv("dataset/student/student-mat.csv", sep=';')
 
 # Rug plot
-sns.rugplot(students_math['studytime'])
 sns.stripplot(x="school", y="studytime", data=students_math, jitter=True)
 sns.violinplot(x="school", y="studytime", data=students_math, hue="school")
 # Scatter Plot
-plt.scatter('studytime', 'age', data=students_math)
-students_math.plot(x="studytime", y="age", kind="scatter")
 sns.jointplot(x="studytime", y="age", data=students_math, size=5)
-sns.FacetGrid(students_math, hue="school", size=5).map(plt.scatter, "studytime", "age").add_legend()
 # Histogram Plot
 plt.hist('studytime', data=students_math)
 sns.distplot(students_math['studytime'])
-students_math.plot(x="studytime", kind="hist")
 # Box plot
 sns.boxplot(data=students_math)
 
@@ -33,11 +28,28 @@ students_mean = students_math.mean()
 students_std = students_math.std()
 
 # Generate 50 random samples
+total_sample_mean = {}
+total_sample_std = {}
+# Generate 50 random samples
 for i in range(0, 50):
     # 10 observation per sample
+
     sample = students_math.sample(n=10)
     sample_mean = sample.mean()
     sample_std = sample.std()
+    for j in range(len(sample_mean)):
+        key = sample_mean.keys()[j]
+        if i == 0:
+            total_sample_mean[key] = sample_mean[key]
+            total_sample_std[key] = sample_std[key]
+        else:
+            total_sample_mean[key] += sample_mean[key]
+            total_sample_std[key] += sample_std[key]
+
+for key in total_sample_mean:
+    total_sample_mean[key] /= 50
+    total_sample_std[key] /= 50
+
 
 # Correlation
 students_math.corr()
