@@ -47,11 +47,28 @@ students_mean = students_math.mean()
 students_std = students_math.std()
 
 # Generate 50 random samples
+total_sample_mean = {}
+total_sample_std = {}
+# Generate 50 random samples
 for i in range(0, 50):
     # 10 observation per sample
+
     sample = students_math.sample(n=10)
     sample_mean = sample.mean()
     sample_std = sample.std()
+    for j in range(len(sample_mean)):
+        key = sample_mean.keys()[j]
+        if i == 0:
+            total_sample_mean[key] = sample_mean[key]
+            total_sample_std[key] = sample_std[key]
+        else:
+            total_sample_mean[key] += sample_mean[key]
+            total_sample_std[key] += sample_std[key]
+
+for key in total_sample_mean:
+    total_sample_mean[key] /= 50
+    total_sample_std[key] /= 50
+
 
 # Correlation
 students_math.corr()
