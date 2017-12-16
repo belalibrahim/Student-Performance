@@ -9,14 +9,33 @@ import random
 students_math = pd.read_csv("dataset/student/student-mat.csv", sep=';')
 
 # Rug plot
-sns.stripplot(x="school", y="studytime", data=students_math, jitter=True)
-sns.violinplot(x="school", y="studytime", data=students_math, hue="school")
+sns.stripplot(x="Pstatus", y="G3", data=students_math, jitter=True)
+sns.stripplot(x="paid", y="failures", data=students_math, jitter=True)
+sns.stripplot(x="nursery", y="G3", data=students_math, jitter=True)
+sns.stripplot(x="internet", y="G3", data=students_math, jitter=True)
+sns.stripplot(x="internet", y="absences", data=students_math, jitter=True)
+
 # Scatter Plot
-sns.jointplot(x="studytime", y="age", data=students_math, size=5)
+#sns.jointplot(x="Medu", y="G3", data=students_math)
+sns.jointplot(x="G2", y="G3", data=students_math)
+sns.jointplot(x="failures", y="G3", data=students_math)
+sns.jointplot(x="absences", y="G3", data=students_math)
+
+sns.jointplot(x="age", y="G3", data=students_math)
+sns.jointplot(x="traveltime", y="G3", data=students_math)
+sns.jointplot(x="failures", y="absences", data=students_math)
+sns.jointplot(x="studytime", y="G3", data=students_math)
+
 # Histogram Plot
-plt.hist('studytime', data=students_math)
-sns.distplot(students_math['studytime'])
+plt.hist(x='G3', data=students_math)
+plt.hist2d(x="G2", y="G3", data=students_math)
+plt.hist2d(x="failures", y="G3", data=students_math)
+# sns.distplot(students_math['studytime'])
 # Box plot
+sns.boxplot(x="paid", y="G3", data=students_math)
+sns.boxplot(x="paid", y="studytime", data=students_math)
+sns.boxplot(x="internet", y="G3", data=students_math)
+sns.boxplot(x="guardian", y="G3", data=students_math)
 sns.boxplot(data=students_math)
 
 # information about ages
