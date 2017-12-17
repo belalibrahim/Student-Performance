@@ -74,6 +74,11 @@ for i in range(50):
 
 total_sample_mean /= 50
 total_sample_std /= 49
+mean_compare = pd.DataFrame([students_mean.values, total_sample_mean.values], columns=students_mean.keys(), index=['Dataset Mean', 'Sample Mean'])
+print(mean_compare)
+print("\n\n")
+std_compare = pd.DataFrame([students_std.values, total_sample_std.values], columns=students_mean.keys(), index=['Dataset STD', 'Sample STD'])
+print(std_compare)
 
 # Correlation
 students_math.corr()
