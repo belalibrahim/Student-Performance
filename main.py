@@ -78,4 +78,5 @@ total_sample_std /= 49
 # Correlation
 students_math.corr()
 
-sns.pairplot(students_math, hue="school", size=3, kind='scatter', diag_kind='kde').add_legend()
+sns.pairplot(students_math, hue="paid", size=3, kind='scatter').add_legend()
+sns.heatmap(students_math.corr())
