@@ -8,6 +8,32 @@ import random
 
 students_math = pd.read_csv("dataset/student/student-mat.csv", sep=';')
 
+
+def get_samples(samples=50, observations=10):
+    # Generate n random samples
+    total_sample_mean = pd.Series()
+    total_sample_var = pd.Series()
+    for i in range(samples):
+        # Generate m observation per sample
+        sample = students_math.sample(n=observations)
+        sample_mean = sample.mean()
+        sample_var = sample.var()
+
+        for j in range(len(sample_mean)):
+            key = sample_mean.keys()[j]
+            if i == 0:
+                total_sample_mean[key] = sample_mean[key]
+                total_sample_var[key] = sample_var[key]
+            else:
+                total_sample_mean[key] += sample_mean[key]
+                total_sample_var[key] += sample_var[key]
+
+    total_sample_mean /= samples
+    total_sample_var /= samples - 1
+
+    return total_sample_mean, total_sample_var
+
+
 # Rug plot
 sns.stripplot(x="Pstatus", y="G3", data=students_math, jitter=True)
 sns.stripplot(x="paid", y="failures", data=students_math, jitter=True)
@@ -50,38 +76,25 @@ sns.boxplot(x="freetime", y="G3", data=students_math)
 # Statistical description for data
 students_math.describe()
 students_mean = students_math.mean()
-students_std = students_math.std()
+students_var = students_math.var()
 
-# Generate 50 random samples
-total_sample_mean = pd.Series()
-total_sample_std = pd.Series()
-# Generate 50 random samples
-for i in range(50):
-    # 10 observation per sample
-    sample = students_math.sample(n=10)
-    sample_mean = sample.mean()
-    sample_std = sample.std()
-
-    for j in range(len(sample_mean)):
-        key = sample_mean.keys()[j]
-        if i == 0:
-            total_sample_mean[key] = sample_mean[key]
-            total_sample_std[key] = sample_std[key]
-        else:
-            total_sample_mean[key] += sample_mean[key]
-            total_sample_std[key] += sample_std[key]
-
-
-total_sample_mean /= 50
-total_sample_std /= 49
-mean_compare = pd.DataFrame([students_mean.values, total_sample_mean.values], columns=students_mean.keys(), index=['Dataset Mean', 'Sample Mean'])
-print(mean_compare)
-print("\n\n")
-std_compare = pd.DataFrame([students_std.values, total_sample_std.values], columns=students_mean.keys(), index=['Dataset STD', 'Sample STD'])
-print(std_compare)
+# Generate 50 random samples and 10 observation per sample
+total_sample_mean, total_sample_var = get_samples()
 
 # Correlation
 students_math.corr()
+
+# sns.pairplot(students_math, hue="paid", size=3, kind='scatter').add_legend()
+# sns.heatmap(students_math.corr())
+
+# Comparison
+mean_compare = pd.DataFrame([students_mean.values, total_sample_mean.values], columns=students_mean.keys(),
+                            index=['Dataset Mean', 'Sample Mean'])
+print(mean_compare)
+print("\n\n")
+var_compare = pd.DataFrame([students_var.values, total_sample_var.values], columns=students_mean.keys(),
+                           index=['Dataset VAR', 'Sample VAR'])
+print(var_compare)
 
 sns.pairplot(students_math, hue="paid", size=3, kind='scatter').add_legend()
 sns.heatmap(students_math.corr())
