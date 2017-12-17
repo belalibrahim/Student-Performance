@@ -47,24 +47,21 @@ sns.boxplot(x="guardian", y="G3", data=students_math)
 sns.boxplot(x="activities", y="G3", data=students_math)
 sns.boxplot(x="freetime", y="G3", data=students_math)
 
-# information about ages
-students_math["age"].value_counts()
-
 # Statistical description for data
 students_math.describe()
 students_mean = students_math.mean()
 students_std = students_math.std()
 
 # Generate 50 random samples
-total_sample_mean = {}
-total_sample_std = {}
+total_sample_mean = pd.Series()
+total_sample_std = pd.Series()
 # Generate 50 random samples
 for i in range(50):
     # 10 observation per sample
-
     sample = students_math.sample(n=10)
     sample_mean = sample.mean()
     sample_std = sample.std()
+
     for j in range(len(sample_mean)):
         key = sample_mean.keys()[j]
         if i == 0:
@@ -74,10 +71,9 @@ for i in range(50):
             total_sample_mean[key] += sample_mean[key]
             total_sample_std[key] += sample_std[key]
 
-for key in total_sample_mean:
-    total_sample_mean[key] /= 50
-    total_sample_std[key] /= 49
 
+total_sample_mean /= 50
+total_sample_std /= 49
 
 # Correlation
 students_math.corr()
